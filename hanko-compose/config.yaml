@@ -23,8 +23,6 @@ webauthn:
       - "http://localhost"
       - "http://localhost:3000"
 session:
-  cookie:
-    secure: false # is needed for safari, because safari does not store secure cookies on localhost
   enable_auth_token_header: true  # set to allow the authorization header token
 server:
   public:
