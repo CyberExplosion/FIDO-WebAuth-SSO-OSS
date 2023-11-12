@@ -1,23 +1,23 @@
 'use client'
 
 import { useEffect } from "react"
-import { Hanko, UnauthorizedError } from "@teamhanko/hanko-frontend-sdk"
 
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL
+const hankoAdmin = process.env.NEXT_PUBLIC_HANKO_ADMIN_URL
 
 const getHanko = async () => {
-  const hanko = new Hanko(hankoApi as string)
 
-  try {
-    const user = await hanko.user.getCurrent()
-    console.log('Here is the user')
-    console.table(user)
-  }
-  catch (e) {
-    if (e instanceof UnauthorizedError) {
-      console.log('some error')
-    }
-  }
+  const createUserRes = await fetch(`/api`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+  })
+
+  const createUserJson = await createUserRes.json()
+
+  console.table(createUserJson)
+
   //   const jsonRes = await fetch(`${hankoApi}/webauthn/login/initialize`,
   //     {
   //       method: 'POST',

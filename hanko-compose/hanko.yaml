@@ -13,24 +13,26 @@ services:
         condition: service_healthy
     networks:
       - intranet
+
   hanko:
     depends_on:
       hanko-migrate:
         condition: service_completed_successfully
+      # hanko-user:
+      #   condition: service_completed_successfully
     build: ../hanko/backend
     ports:
       - '8000:8000' # public
       - '8001:8001' # admin
     restart: unless-stopped
-    command: serve --config /etc/config/config.yaml all
+    command: serve --config /etc/config/config.yaml all 
     volumes:
       - type: bind
         source: ./config.yaml
         target: /etc/config/config.yaml
     networks:
       - intranet
-    environment:
-      - PASSWORD_ENABLED
+
   postgresd:
     image: postgres:12-alpine
     ports:
@@ -45,23 +47,6 @@ services:
       timeout: 10s
       retries: 3
       start_period: 30s
-    networks:
-      - intranet
-  elements:
-    build: ../hanko/frontend
-    ports:
-      - "9500:80"
-    networks:
-      - intranet
-  quickstart:
-    build: ../hanko/quickstart
-    ports:
-      - "8888:8080"
-    environment:
-      - HANKO_URL=http://localhost:8000
-      - HANKO_URL_INTERNAL=http://hanko:8000
-      - HANKO_ELEMENT_URL=http://localhost:9500/elements.js
-      - HANKO_FRONTEND_SDK_URL=http://localhost:9500/sdk.modern.js
     networks:
       - intranet
   mailslurper:
