@@ -1,10 +1,9 @@
 database:
   user: hanko
   password: hanko
-  database: hanko
   host: postgresd
-  port: "5432"
-  dialect: "postgres"
+  port: 5432
+  dialect: postgres
 passcode:
   email:
     from_address: no-reply@hanko.io
@@ -15,22 +14,16 @@ secrets:
   keys:
     - abcedfghijklmnopqrstuvwxyz
 service:
-  name: "Hanko Authentication Service"
+  name: Hanko Authentication Service
 webauthn:
   relying_party:
-    id: "nothing"
-    display_name: "Local Host"
     origins:
-      - "https://localhost:3000"
+      - "http://localhost:8888"
+session:
+  cookie:
+    secure: false # is needed for safari, because safari does not store secure cookies on localhost
 server:
   public:
-    address: ":8000"
     cors:
       allow_origins:
-        - "https://github.com"
-      unsafe_wildcard_origin_allowed: false
-  admin:
-    address: ":8001"
-
-emails:
-  require_verification: false
+        - "http://localhost:8888"
