@@ -19,11 +19,13 @@ webauthn:
   relying_party:
     origins:
       - "http://localhost:8888"
+emails:
+  require_verification: false
 session:
-  cookie:
-    secure: false # is needed for safari, because safari does not store secure cookies on localhost
+  enable_auth_token_header: true
 server:
   public:
     cors:
       allow_origins:
-        - "http://localhost:8888"
+        - "*"
+      unsafe_wildcard_origin_allowed: true
