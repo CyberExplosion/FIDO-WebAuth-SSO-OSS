@@ -1,6 +1,6 @@
 'use client'
 
-import { RegistrationPublicKeyCredential, create, parseCreationOptionsFromJSON } from "@github/webauthn-json/browser-ponyfill"
+import { RegistrationResponseJSON, create, parseCreationOptionsFromJSON, parseRequestOptionsFromJSON } from "@github/webauthn-json/browser-ponyfill"
 
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL
 
@@ -23,7 +23,7 @@ const webauthnInit = async () => {
 }
 
 // Send the public key generate by the browser and user authenticator
-const webAuthnFinalize = async (cred: RegistrationPublicKeyCredential) => {
+const webAuthnFinalize = async (cred: RegistrationResponseJSON) => {    
     const xAuthToken = sessionStorage.getItem('hanko') || ''
     const response = await fetch(`${hankoApi}/webauthn/registration/finalize`, {
         method: 'POST',
@@ -31,7 +31,7 @@ const webAuthnFinalize = async (cred: RegistrationPublicKeyCredential) => {
             'Authorization': `Bearer ${xAuthToken}`
         },
         credentials: "include",
-        body: JSON.stringify(cred.toJSON())
+        body: JSON.stringify(cred)
     })
 
     console.log('Finalize registration result')
@@ -51,5 +51,49 @@ export const webAuthnRegistration = async () => {
     const credJson = await credentials.toJSON()
     console.table(credJson)
 
-    await webAuthnFinalize(credentials)
+    await webAuthnFinalize(credJson)
+}
+
+const webAuthnLoginInit = async (user_id: string): Promise<CredentialRequestOptions> => {
+    const data = {
+        user_id: user_id
+    }
+    const logInRes = await fetch(`${hankoApi}/webauthn/login/initialize`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+    })
+
+    const logInJson = await logInRes.json()
+    console.log(`The return of intializing login`)
+    console.table(logInJson)
+
+    return logInJson
+}
+
+const webAuthLoginFinalize = async (loginData: any) => {
+}
+
+export const webAuthnLogin = async (user_id: string) => {
+    const requestCredOptions = await webAuthnLoginInit(user_id)
+    const parsedOptions = parseRequestOptionsFromJSON(requestCredOptions)
+}
+
+// TODO: Find out why it doesn't do anything
+// TODO: shouldn't it log the user out and invalidate the x-auth-token?
+export const webAuthnLogOut = async () => {
+    const xAuthToken = sessionStorage.getItem('hanko') || ''
+    const logoutRes = await fetch(`${hankoApi}/logout`, {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${xAuthToken}`
+        },
+        credentials: "include"
+    })
+
+    const logoutJson = await logoutRes.json()
+    // console.log('The result of logout')
+    // console.table(JSON.stringify(logoutJson))
 }

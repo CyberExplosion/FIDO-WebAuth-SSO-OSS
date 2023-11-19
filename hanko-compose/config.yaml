@@ -19,6 +19,7 @@ webauthn:
   relying_party:
     origins:
       - "http://localhost:8888"
+      - "https://localhost:3000"
 emails:
   require_verification: false
 session:
