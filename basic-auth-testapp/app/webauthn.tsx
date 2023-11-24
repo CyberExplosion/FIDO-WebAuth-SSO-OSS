@@ -1,6 +1,7 @@
 'use client'
 
-import { RegistrationResponseJSON, create, parseCreationOptionsFromJSON, parseRequestOptionsFromJSON } from "@github/webauthn-json/browser-ponyfill"
+import { PublicKeyCredentialWithAssertionJSON } from "@github/webauthn-json"
+import { RegistrationResponseJSON, create, get, parseCreationOptionsFromJSON, parseRequestOptionsFromJSON } from "@github/webauthn-json/browser-ponyfill"
 
 const hankoApi = process.env.NEXT_PUBLIC_HANKO_API_URL
 
@@ -54,7 +55,7 @@ export const webAuthnRegistration = async () => {
     await webAuthnFinalize(credJson)
 }
 
-const webAuthnLoginInit = async (user_id: string): Promise<CredentialRequestOptions> => {
+const webAuthnLoginInit = async (user_id: string) => {
     const data = {
         user_id: user_id
     }
@@ -73,12 +74,29 @@ const webAuthnLoginInit = async (user_id: string): Promise<CredentialRequestOpti
     return logInJson
 }
 
-const webAuthLoginFinalize = async (loginData: any) => {
+// Can change the authenticator preference with the transports key value
+const webAuthLoginFinalize = async (loginData: PublicKeyCredentialWithAssertionJSON) => {
+    const loginFinalizeRes = await fetch(`${hankoApi}/webauthn/login/finalize`, {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(loginData)
+    })
+    const loginJson = await loginFinalizeRes.json()
+
+    console.log(`Finalizing the login`)
+    console.table(loginJson)
 }
 
 export const webAuthnLogin = async (user_id: string) => {
     const requestCredOptions = await webAuthnLoginInit(user_id)
     const parsedOptions = parseRequestOptionsFromJSON(requestCredOptions)
+    const assertion = await get(parsedOptions)
+    console.log(`The login cred results is:`)
+    console.table(assertion)
+
+    await webAuthLoginFinalize(assertion.toJSON())
 }
 
 // TODO: Find out why it doesn't do anything
@@ -94,6 +112,4 @@ export const webAuthnLogOut = async () => {
     })
 
     const logoutJson = await logoutRes.json()
-    // console.log('The result of logout')
-    // console.table(JSON.stringify(logoutJson))
 }

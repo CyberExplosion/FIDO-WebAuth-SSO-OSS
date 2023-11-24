@@ -53,7 +53,7 @@ export default function Home () {
     <div className="flex flex-col">
       <h1>Hello</h1>
       <label>
-        Your email address: 
+        Your email address:
         <input
           value={email}
           onChange={e => setEmail(e.target.value)}
@@ -72,6 +72,13 @@ export default function Home () {
         <p>Id name: {currentId}</p>
         <p>Id name: {currentId}</p>
       </section>
+
+      <label>
+        Change current user id:
+        <input
+          value={currentId}
+          onChange={(e) => setId(e.target.value)} />
+      </label>
     </div>
   )
 }

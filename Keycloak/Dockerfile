@@ -8,4 +8,4 @@ ENV KEYCLOAK_ADMIN_PASSWORD=admin
 EXPOSE 8080
 
 # Set the custom entry point
-CMD [ "start-dev" ]
+CMD [ "start-dev"]
