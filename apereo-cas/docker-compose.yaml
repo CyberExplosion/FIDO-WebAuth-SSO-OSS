@@ -7,6 +7,9 @@ services:
       - type: bind
         source: ./thekeystore
         target: /etc/cas/thekeystore
+      - type: bind
+        source: ./config.yaml
+        target: /etc/cas/config/config.yaml
     ports:
       - "8080:8080"
       - "8443:8443"
