@@ -1,4 +1,4 @@
-ARG BASE_IMAGE="azul/zulu-openjdk:21"
+ARG BASE_IMAGE="eclipse-temurin:11-jdk"
 ARG EXT_BUILD_COMMANDS=""
 ARG EXT_BUILD_OPTIONS=""
 

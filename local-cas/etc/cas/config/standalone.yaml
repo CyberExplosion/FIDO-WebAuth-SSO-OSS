@@ -1,0 +1,35 @@
+cas:
+  authn:
+    mfa:
+      web-authn:
+        core:
+          relying-party-id: localhost
+          relying-party-name: Local Host
+  monitor:
+    endpoints:
+      endpoint:
+        defaults:
+          access: ANONYMOUS
+        webAuthnDevices:
+          access: ANONYMOUS
+        # info:
+        #   access: ANONYMOUS
+        # health:
+        #   access: ANONYMOUS
+
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: "*"
+    enabled-by-default: true
+  endpoint:
+    webAuthnDevices:
+      enabled: true
+
+spring:
+  security:
+    user:
+      name: casuser
+      password: Mellon
