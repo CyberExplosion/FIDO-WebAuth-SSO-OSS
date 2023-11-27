@@ -293,7 +293,9 @@ dependencies {
      * plugin via the CAS bom.
      **/
     implementation "org.apereo.cas:cas-server-support-webauthn"
- 
+    implementation "org.apereo.cas:cas-server-support-reports:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-support-passwordless-webflow:${project.'cas.version'}"
+    implementation "org.apereo.cas:cas-server-core-notifications:${project.'cas.version'}"
 
     if (project.hasProperty("casModules")) {
         def dependencies = project.getProperty("casModules").split(",")
