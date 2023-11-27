@@ -1,0 +1,7 @@
+version: '3.9'
+services:
+  openam:
+    image: openidentityplatform/openam
+    container_name: openam
+    ports:
+      - "8080:8080"
