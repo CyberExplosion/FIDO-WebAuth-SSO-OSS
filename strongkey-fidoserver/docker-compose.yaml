@@ -1,0 +1,9 @@
+version: '3.9'
+services:
+  strongkey:
+    container_name: strongkey-FIDO-server
+    build: .
+    extra_hosts:
+      - "fido2tutorial.strongkey.com:11.29.215.103"
+    ports:
+      - 3001:3001

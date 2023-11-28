@@ -2,6 +2,27 @@ version: '3.9'
 services:
   openam:
     image: openidentityplatform/openam
+    # volumes:
+    #   - ./server.xml:/usr/local/tomcat/conf/server.xml:rw
+    #   - ./thekeystore:/usr/local/tomcat/conf/thekeystore:rw
     container_name: openam
+    hostname: openam.example.com
     ports:
       - "8080:8080"
+    networks:
+      - compose_net
+      
+  apache_agent:
+    build: .
+    container_name: apache_agent
+    depends_on:
+      - openam
+    ports:
+      - "80:80"
+    hostname: example.com
+    shm_size: 2G
+    networks:
+      - compose_net
+
+networks:
+  compose_net:
