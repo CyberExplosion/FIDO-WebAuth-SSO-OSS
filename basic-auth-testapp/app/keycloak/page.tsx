@@ -1,41 +1,39 @@
 'use client'
 
 import Keycloak from "keycloak-js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 
-
-const defaultFunc = async (keycloak: Keycloak) => {
-    try {
-        const authenticated = await keycloak.init({
-            onLoad: 'login-required'
-        })
-        console.log(`User is ${authenticated ? 'authenticated' : 'not authenticated'}`);
-        console.log('user profile')
-        console.table(await keycloak.loadUserProfile())
-    } catch (error) {
-        console.error('Failed to initialize adapter:', error);
+const login = async (keycloak: Keycloak) => {
+    const authenticated = await keycloak.init({})
+    if (authenticated) {
+        console.error('The user is authenticated, user should not still be here')
+    }
+    else {
+        const res = await keycloak.login({ redirectUri: 'https://localhost:3000/keycloak/success' })
     }
 }
 
-const login = async (keycloak: Keycloak) => {
-    const res = await keycloak.login({ redirectUri: 'https://localhost:3000/keycloak/success' })
-    return res
-}
-
+// Check if keycloak isalready init before doing init again
 export default function KeyCloakHome () {
-    const keycloak = new Keycloak({
-        url: 'https://localhost:8443',
-        realm: 'passwordless',
-        clientId: 'basictest'
-    })
-    keycloak.init({})
+    const [keycloak, setKeyCloak] = useState<Keycloak | null>(null)
+
     useEffect(() => {
-        const result = login(keycloak)
-        console.log('the result is:')
-        console.table(result)
+        if (typeof window !== 'undefined') {
+            const keycloakInstance = new Keycloak({
+                url: 'https://localhost:8443',
+                realm: 'passwordless',
+                clientId: 'basictest'
+            })
+            setKeyCloak(keycloakInstance)
+        }
     }, [])
 
+
     return (
-        <h1>Hello</h1>
+        <>
+            <h1>Hello</h1>
+            <button onClick={() => login(keycloak!)}>Log in</button>
+        </>
     )
+
 }
