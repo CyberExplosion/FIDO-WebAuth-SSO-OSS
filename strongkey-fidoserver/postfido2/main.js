@@ -12,6 +12,8 @@ import express from "express";
 import session from 'express-session';
 const app = express();
 import routes from './routes.js';
+// import { urlencoded } from 'body-parser';
+
 import pkg from 'body-parser';
 const { urlencoded } = pkg;
 

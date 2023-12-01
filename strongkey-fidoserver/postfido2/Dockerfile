@@ -2,20 +2,19 @@
 
 FROM ubuntu:latest
 
-# This IP
-ENV APPSERVER_IP=11.29.215.103
-
 RUN apt-get update
 
 RUN apt install -y nodejs npm sqlite
 
-COPY prefido2 /prefido2
+COPY ./ /postfido2
 
-WORKDIR /prefido2
+WORKDIR /postfido2
 
 RUN npm install
 
 RUN npm install pm2@latest -g
+
+RUN npm install express-useragent
 
 RUN pm2 start main.js
 
@@ -24,4 +23,4 @@ RUN pm2 startup systemd
 RUN pm2 save
 
 # Start the nodejs app
-CMD ["pm2-runtime", "main.js"]
+CMD ["node", "main.js"]

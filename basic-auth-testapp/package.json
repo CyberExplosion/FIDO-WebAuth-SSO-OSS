@@ -12,6 +12,7 @@
   "dependencies": {
     "@github/webauthn-json": "^2.1.1",
     "@teamhanko/hanko-frontend-sdk": "^0.9.0",
+    "keycloak-js": "^23.0.1",
     "next": "14.0.1",
     "react": "^18",
     "react-dom": "^18"

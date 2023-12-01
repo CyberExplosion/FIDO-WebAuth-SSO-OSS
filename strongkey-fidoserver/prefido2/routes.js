@@ -4,16 +4,18 @@
  * Use of this source code is governed by the GNU Lesser General Public License v2.1
  * The license can be found at https://github.com/StrongKey/fido2/blob/master/LICENSE
  */
-var dateFormat = require('dateformat');
-var fs = require('fs');
-var crypto = require('crypto');
-var fileReader = require('./fileReader');
-var url = require('url');
-var express = require('express');
-var session = require('express-session')
-var router = express.Router();
-const sqlite3 = require("sqlite3").verbose();
-router.use(express.static('public'));
+import dateFormat from 'dateformat';
+import { appendFile } from 'fs';
+import { createHmac } from 'crypto';
+import { fileReader as _fileReader } from './fileReader.js';
+import url from 'url';
+import { Router, static as expressStatic} from 'express';
+import session from 'express-session';
+var router = Router();
+import sqlite3 from 'sqlite3'
+const sqlite = sqlite3.verbose()
+// const sqlite = require("sqlite3").verbose();
+router.use(expressStatic('public'));
 
 // LLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLLL
 // Add a 'const https = require('https');' This is what is used to make http requests
@@ -23,7 +25,7 @@ router.use(express.static('public'));
 
 
 
-failedRegistration=null;
+let failedRegistration=null;
 
 
 //Template routes
@@ -33,7 +35,7 @@ router.get('/dashboard', (req, res) => {
     log(req.session.userid);
     //Checking if user is logged in
     if(req.session.userid){
-      fileReader.fileReader("/dashboard.html","text/html",req,res);
+      _fileReader("/dashboard.html","text/html",req,res);
     } else {
       res.redirect("/login");
     }
@@ -41,7 +43,7 @@ router.get('/dashboard', (req, res) => {
 });
 //route for login.html
 router.get('/login', (req, res) => {
-    fileReader.fileReader("/login.html","text/html",req,res);
+    _fileReader("/login.html","text/html",req,res);
 });
 //route for register.html
 router.get('/register', (req, res) => {
@@ -51,7 +53,7 @@ router.get('/register', (req, res) => {
     if(failedRegistration){
       req.session.failedReg=true;
     }
-    fileReader.fileReader("/register.html","text/html",req,res);
+    _fileReader("/register.html","text/html",req,res);
     failedRegistration = false;
 });
 
@@ -83,7 +85,7 @@ router.post("/loginSubmit", (req,res) =>{
     return;
   }
   //convert password into hmac to compare with database entry
-  const passwordHash = crypto.createHmac('sha256', password).digest('hex');
+  const passwordHash = createHmac('sha256', password).digest('hex');
   var db = getDB();
   //verify credentials with database
   db.get(`select * from users where username = ? and password = ? `,[username,passwordHash],
@@ -118,7 +120,7 @@ router.post("/registerSubmit", (req,res) =>{
     return;
   }
   //convert password into hmac for database storage
-  const passwordHash = crypto.createHmac('sha256', password).digest('hex');
+  const passwordHash = createHmac('sha256', password).digest('hex');
   var db = getDB();
   //check if username already exists in database
   db.get(`select * from users where username = ? `,[username],
@@ -264,7 +266,8 @@ router.get("/deleteUser", (req,res) =>{
 router.post("/getFailedReg", (req,res) =>{
   res.json({failed:req.session.failedReg});
 });
-router.post("/justReg", (req,res) =>{
+router.post("/justReg", (req, res) => {
+  console.log('Please tell me it gets in here')
   if (req.session.justReg){
     req.session.justReg = false;
     res.json({justReg:true});
@@ -286,19 +289,19 @@ router.post("/justUserDeleted", (req,res) =>{
 //internal src file paths
 
 router.get("/styles/*", (req,res) =>{
-  fileReader.fileReader(req.url,"text/css",req,res);
+  _fileReader(req.url,"text/css",req,res);
 });
 router.get("/js/*", (req,res) =>{
-  fileReader.fileReader(req.url,"text/javascript",req,res);
+  _fileReader(req.url,"text/javascript",req,res);
 });
 router.get("/fonts/*", (req,res) =>{
-  fileReader.fileReader(req.url,"font/opentype",req,res);
+  _fileReader(req.url,"font/opentype",req,res);
 });
 router.get("/background.jpg", (req,res) =>{
-  fileReader.fileReader("/img/background.jpg","image/jpeg",req,res);
+  _fileReader("/img/background.jpg","image/jpeg",req,res);
 });
 router.get("/logo.png", (req,res) =>{
-  fileReader.fileReader("/img/logo.png","image/png",req,res);
+  _fileReader("/img/logo.png","image/png",req,res);
 });
 
 
@@ -316,7 +319,7 @@ router.get('/*', (req, res) => {
 
 //database access
 var getDB = function(){
-  let db = new sqlite3.Database('./db/aftdb.db',sqlite3.OPEN_READWRITE, (err) => {
+  let db = new sqlite.Database('./db/aftdb.db',sqlite.OPEN_READWRITE, (err) => {
     if (err) {
       return log("getDB ERROR: "+ err.message);
     }
@@ -335,7 +338,7 @@ var closeDB = function(db){
 
 //logging
 var log = function(message){
-  fs.appendFile('log', Date()+message+"\n", function (err) {if (err) throw err;});
+  appendFile('log', Date()+message+"\n", function (err) {if (err) throw err;});
 }
 
-module.exports = router;
+export default router;
