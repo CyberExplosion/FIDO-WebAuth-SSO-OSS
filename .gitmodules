@@ -1,6 +1,3 @@
 [submodule "hanko"]
 	path = hanko
 	url = https://github.com/teamhanko/hanko.git
-[submodule "Website"]
-	path = Website
-	url = https://github.com/ECS-171-Divorce-Team/Website.git
