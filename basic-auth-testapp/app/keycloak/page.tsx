@@ -32,7 +32,7 @@ export default function KeyCloakHome () {
     return (
         <>
             <h1>Hello</h1>
-            <button onClick={() => login(keycloak!)}>Log in</button>
+            <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => login(keycloak!)}>Log in</button>
         </>
     )
 

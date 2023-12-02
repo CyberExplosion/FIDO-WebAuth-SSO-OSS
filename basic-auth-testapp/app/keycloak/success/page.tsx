@@ -1,7 +1,7 @@
 'use client'
 
 import Keycloak from "keycloak-js"
-import { Key, useEffect, useState } from "react"
+import { Dispatch, Key, SetStateAction, useEffect, useState } from "react"
 
 const init = async (keycloak: Keycloak) => {
     const authenticated = await keycloak.init({})
@@ -14,10 +14,16 @@ const init = async (keycloak: Keycloak) => {
     }
 }
 
-const requestConfidentialData = async (keycloak: Keycloak) => {
+const requestConfidentialData = async (keycloak: Keycloak, setResponse: Dispatch<SetStateAction<string>>) => {
     const body = {
         token: keycloak.token
     }
+
+    //! Test wrong token
+    // const body = {
+    //     token: `${keycloak.token}y`
+    // }
+
     const ret = await fetch('https://localhost:3001/api', {
         method: 'POST',
         headers: {
@@ -25,17 +31,19 @@ const requestConfidentialData = async (keycloak: Keycloak) => {
         },
         body: JSON.stringify(body)
     })
-    const parsedToken = keycloak.tokenParsed
-    console.log(`The parsed token`)
-    console.log(JSON.stringify(parsedToken, null, 2))
-    console.table(ret)
-    
-    return ret
+    const retJson = await ret.json()
+    // const parsedToken = keycloak.tokenParsed
+    // console.log(`The parsed token`)
+    // console.log(JSON.stringify(parsedToken, null, 2))
+    // console.table(ret)
+
+    setResponse(retJson['msg'])
 }
 
 export default function LoginSuccess () {
     const [keycloak, setKeyCloak] = useState<Keycloak | null>(null)
     const [loggedIn, setLoggedIn] = useState(false)
+    const [response, setResponse] = useState('')
 
     useEffect(() => {
         if (typeof window !== 'undefined') {
@@ -66,7 +74,12 @@ export default function LoginSuccess () {
                 <h1>Success</h1>
                 <p>User id: {keycloak?.subject}</p>
                 <p>Bearer Token: {keycloak?.token}</p>
-                <button onClick={() => requestConfidentialData(keycloak!)}>Test out token</button>
+                <button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => requestConfidentialData(keycloak!, setResponse)}>Test out token</button>
+                {
+                    response.length > 0
+                        ? <p>Backend response: {response}</p>
+                        : <></>
+                }
             </>
         )
     }

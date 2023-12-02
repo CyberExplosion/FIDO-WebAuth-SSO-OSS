@@ -26,9 +26,12 @@ export async function POST (request: NextRequest, response: NextResponse) {
     const retJson = await ret.json()
     console.log(`Result of fetch: ${JSON.stringify(retJson)}`)
     
+    const secretData = {msg: 'Have a nice day!'}
+    const badData = {msg: 'Not authorized to access!'}
+
     if (retJson['active']) {
         console.log('The token is valid')
-        return new Response('The token is valid', {
+        return new Response(JSON.stringify(secretData), {
             status: 200,
             headers: {
                 'Access-Control-Allow-Origin': '*',
@@ -37,7 +40,7 @@ export async function POST (request: NextRequest, response: NextResponse) {
             }
         })
     } else {
-        return new Response('The token is not valid', {
+        return new Response(JSON.stringify(badData), {
             status: 403,
             headers: {
                 'Access-Control-Allow-Origin': '*',
