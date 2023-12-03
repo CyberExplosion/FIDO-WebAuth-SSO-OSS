@@ -1,0 +1,12 @@
+.container {
+    margin-top: 5%;
+
+    font-style: normal;
+    font-weight: 100;
+    font-size: 20px;
+    line-height: 20px;
+}
+
+.teamName {
+    font-weight: 600;
+}

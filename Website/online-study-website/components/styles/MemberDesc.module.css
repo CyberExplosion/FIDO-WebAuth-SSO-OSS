@@ -1,0 +1,19 @@
+.name {
+    height: 44px;
+
+    font-weight: 100;
+    font-style: normal;
+    font-size: 30px;
+    line-height: 44px;
+}
+
+.desc {
+    font-style: normal;
+    font-weight: 100;
+    font-size: 25px;
+    line-height: 37px;
+}
+
+.imgWrapper > span > img {
+    object-fit: cover;
+}

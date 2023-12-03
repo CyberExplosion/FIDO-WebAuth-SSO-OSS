@@ -1,0 +1,10 @@
+{
+  "realm": "passwordless",
+  "auth-server-url": "https://localhost:8443/",
+  "ssl-required": "external",
+  "resource": "websiteapp",
+  "credentials": {
+    "secret": "5XKp2n7NSo082L2CvKtyg2jbIXR0JgUw"
+  },
+  "confidential-port": 0
+}

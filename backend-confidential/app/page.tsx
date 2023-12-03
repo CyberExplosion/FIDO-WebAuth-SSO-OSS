@@ -24,7 +24,7 @@ export default function Home () {
   return (
     <>
       <h1>Home page unused</h1>
-      <button onClick={() => click()}>Clik me</button>
+      {/* <button onClick={() => click()}>Clik me</button> */}
     </>
   )
 }

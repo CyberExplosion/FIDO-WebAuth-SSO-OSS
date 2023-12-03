@@ -1,0 +1,34 @@
+const express = require('express')
+const session = require('express-session')
+const Keycloak = require('keycloak-connect')
+const {createProxyMiddleware} = require('http-proxy-middleware')
+
+const memoryStore = new session.MemoryStore();
+
+const kcConfig = {
+    clientId: 'websiteapp',
+    bearerOnly: true,
+    serverUrl: 'https://localhost:8443',
+    realm: 'passwordless',
+    realmPublicKey: 'MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApPLOL5MJDMwfIxPp5qj8wr3AhNl7SCUFV+WYHNQzjfOFyodMkt6hZXWL/pSgenBn2Q8at5W7ucSo5w0jHeFrgCgpPjqwdn+iHv9AgBzAQH1pnDbZA02azkxmH8OeqFij2js5lwPIYv+s3POo8qbZPa7XE5LLz7tOuWve8c3jzdT7mpklwstRfkGmHEAjTfbbUDVHnxPmttVNmXwDlS1rkjAmurNSxiXKJ+DTUIOTcvaum88bwtkVMzXeuRdyail1qXVgjrbxK/G7yzVGxHycMdtSQW3YpZlTU9b25+naF+OArkfcteEUi2BPviNoBo5vioSjf4b9JDeWjgR3AwhOFQIDAQAB'
+}
+
+
+const app = express()
+app.use(session({
+    secret: 'syFJmWN9omX9n6OQotXaEBZZxJTuiQ8h',
+    resave: false,
+    saveUninitialized: true,
+    store: memoryStore
+}))
+const keycloak = new Keycloak({ store: memoryStore });
+app.use(keycloak.middleware())
+
+app.use('../online-study-website', keycloak.protect(), createProxyMiddleware({
+    target: 'https://localhost:3002',
+    changeOrigin: true
+}))
+
+app.listen(3003, () => {
+    console.log('Express server running on port 3003')
+})
