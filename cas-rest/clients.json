@@ -1,0 +1,23 @@
+[
+    "java.util.ArrayList",
+    [
+        {
+            "@class": "org.apereo.cas.services.CasRegisteredService",
+            "serviceId": "https://localhost:3000/cas",
+            "name": "React-Application",
+            "description": "Basic react application to help test out sso",
+            "redirectUrl": "https://localhost:3000/cas/success",
+            "id": 100,
+            "evaluationOrder": 100
+        },
+        {
+            "@class": "org.apereo.cas.services.CasRegisteredService",
+            "serviceId": "https://localhost:3003/cas",
+            "name": "ML-page",
+            "description": "Basic react application to help test out sso",
+            "redirectUrl": "https://localhost:3002",
+            "id": 200,
+            "evaluationOrder": 200
+        }
+    ]
+]

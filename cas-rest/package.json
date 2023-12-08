@@ -1,0 +1,18 @@
+{
+  "name": "cas-rest-deviceregistration",
+  "version": "1.0.0",
+  "description": "a small server that serve rest request for cas",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "base64url": "^3.0.1",
+    "body-parser": "^1.20.2",
+    "express": "^4.18.2",
+    "jsonwebtoken": "^9.0.2"
+  }
+}

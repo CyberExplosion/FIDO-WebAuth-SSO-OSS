@@ -4,7 +4,8 @@
   "description": "Server protect website",
   "main": "index.js",
   "scripts": {
-    "start": "node server.js",
+    "cas": "node cas.js",
+    "keycloak": "node keycloak.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
@@ -12,6 +13,7 @@
   "dependencies": {
     "express": "^4.18.2",
     "express-session": "^1.17.3",
+    "http-cas-client": "^0.4.3",
     "http-proxy-middleware": "^2.0.6",
     "keycloak-connect": "^23.0.1",
     "next": "^14.0.3"
