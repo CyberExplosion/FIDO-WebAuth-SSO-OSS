@@ -1,10 +1,51 @@
 cas:
+  server:
+    name: "https://localhost:8443"
+
+  tgc:
+    crypto:
+      encryption:
+        key: U9kUU50UXsE2OD5bu9X64r4EgA2ENQhVuq8QniUPuqo
+      signing:
+        key: Uz8m1N4Uyg7okw7ZfWX84E3-ZVEzvZwFNzm5X520Ddl6lBgDUYXlr7GV1AomDD3gNjMrpcXlF4z_QkV3-PG1FQ
+
+  service-registry:
+    rest:
+      url: "https://localhost:3030"
+
   authn:
     mfa:
       web-authn:
         core:
+          application-id: "https://localhost:8443"
+          allowed-origins: "https://localhost:8443"
           relying-party-id: localhost
           relying-party-name: Local Host
+          allow-untrusted-attestation: true
+          allow-primary-authentication: true
+
+        crypto:
+          encryption:
+            key: v2vwWZbJGgrd3f3CSwoUvBLkq5TQZnnDZId1B5L2Uk4
+          signing:
+            key: otKT9KmzjOOoacYXFrfsVtIvzNzBpY1MFc88x51YKd-bu4lXegJkYNX2F6UqMvCTJiTNX7viFwHTIA-bajjGYw
+
+    # passwordless:
+    #   accounts:
+    #     simple:
+    #       casuser: cyberhyperwave@gmail.com
+    #   tokens:
+    #     crypto:
+    #       encryption:
+    #         key: bHLnHwE8irC5zNwaCg3Ga3Gwy4XmCmHCPXhmqpkLpE8
+    #       signing:
+    #         key: o1GczNeau0ud1BYKUMBo83g5evocnK5gvEkYcPhc5xeVi4swGQTaz_J3DKXcd34nRwsH-tDqbiu0fT3hQoAY3Q
+    #     mail:
+    #       from: cas-server@somewhere.org
+    #       subject: Your CAS Passwordless Token
+    #       text: Your CAS Passwordless token is <strong>${token}</strong>.
+    #       html: true
+
   monitor:
     endpoints:
       endpoint:
@@ -29,7 +70,11 @@ management:
       enabled: true
 
 spring:
-  security:
-    user:
-      name: casuser
-      password: Mellon
+  mail:
+    host: localhost
+    port: 25
+    testConnection: true
+    properties:
+      mail:
+        smtp:
+          auth: false

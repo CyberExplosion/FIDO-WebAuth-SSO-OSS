@@ -1,0 +1,7 @@
+{
+    "@class" : "org.apereo.cas.services.RegexRegisteredService",
+    "serviceId": "https://localhost:*/*",
+    "name": "React Application",
+    "id": 1,
+    "evaluationOrder": 1
+}
