@@ -14,7 +14,7 @@ Go to `cas-rest`, `basic-auth-testapp`, `keycloak-rest`, `Website`, `Website/onl
 ```zsh
 npm install
 ```
-on each 
+for each folder. This will download all the necessary libraries for those demo application to run.
 
 ## Directories
 Keycloak related folders are folders with names that started with `keycloak-*`. CAS folder starts with `cas-*`. Any other folder name are used by both services to test out single sign-on (SSO).
@@ -31,6 +31,9 @@ You can then use [docker load](https://docs.docker.com/engine/reference/commandl
 docker load < keycloak_custom.tar.gz
 ```
 
-Then find the file `docker-compose.yaml` inside `keycloak-docker` folder. While inside the folder
+Enter the folder `keycloak-docker`, now either use `mkcert` to create your SSL certificate, or copy the two generated `*.pem` file you get from the [Preparation](#preparation) step. 
+Then find the file `docker-compose.yaml` inside `keycloak-docker` folder. Use it to instruct Docker Compose to run a new container from the downloaded image.
+```zsh
+docker compose -f ./docker-compose.yaml -p "keycloak_custom" up
+```
 
-Afterwards, use the file `docker-compose.yaml`
