@@ -1,15 +1,9 @@
 const express = require('express')
 const fs = require('fs')
 const https = require('https')
-const bodyParser = require('body-parser')
-const jwt = require('jsonwebtoken');
-const base64url = require('base64url');
-
 
 process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0"
-
 const PORT = 3030
-const filePath = './response.json'
 
 const app = express()
 app.use(express.json())

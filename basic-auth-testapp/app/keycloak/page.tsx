@@ -28,7 +28,6 @@ export default function KeyCloakHome () {
         }
     }, [])
 
-
     return (
         <>
             <h1>Hello</h1>
