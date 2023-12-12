@@ -17,6 +17,8 @@ yarn install
 ```
 for each folder. This will download all the necessary libraries for those demo applications to run.
 
+For CAS, you have to have to use Java's `keytool` to generate a local certificate for HTTPS, CAS protocol and FIDO2 only works over SSL/TLS connection.
+
 ## Directories
 Keycloak-related folders are folders with names that start with `keycloak-*`. CAS folder starts with `cas-*`. Any other folder names are used by both services to test out single sign-on (SSO).
 
@@ -88,7 +90,12 @@ I have included a WAR layer, with the necessary module extension to enable FIDO2
 
 1. Navigate to folder `cas-waroverlay/`.
 2. Copy folder `etc/` to your root directory. CAS reads configuration files stored in the `etc/` directory but only from your current root directory.
-3. Now run the commands:
+3. Navigate to `etc/cas/` folder, then run the command:
+```
+keytool -genkey -keyalg RSA -alias cas -keystore ./thekeystore -storepass changeit -validity 9999 -keysize 2048 -dname "CN=localhost, OU=local, O=localcomp, c=US, st=CA, l=Davis" -ext SAN="dns:example.com,dns:*.example.com,dns:example.test,dns:localhost,ip:127.0.0.1,ip:::1,dns:localhost"
+```
+
+4. After generate the certificate, head back to the folder `cas-waroverlay/` and run this command:
 ```
 ./gradlew clean build
 ```

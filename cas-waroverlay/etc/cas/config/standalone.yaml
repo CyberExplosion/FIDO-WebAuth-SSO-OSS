@@ -69,12 +69,12 @@ management:
     webAuthnDevices:
       enabled: true
 
-spring:
-  mail:
-    host: localhost
-    port: 25
-    testConnection: true
-    properties:
-      mail:
-        smtp:
-          auth: false
+# spring:
+#   mail:
+#     host: localhost
+#     port: 25
+#     testConnection: true
+#     properties:
+#       mail:
+#         smtp:
+#           auth: false
