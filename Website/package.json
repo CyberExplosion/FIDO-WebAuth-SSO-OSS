@@ -5,7 +5,8 @@
   "main": "index.js",
   "scripts": {
     "cas": "node cas.js",
-    "keycloak": "node keycloak.js",
+    "keycloak": "node keycloak.js && yarn website",
+    "website": "cd online-study-website && yarn https",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
