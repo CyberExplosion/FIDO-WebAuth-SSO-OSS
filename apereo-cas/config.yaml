@@ -1,6 +1,0 @@
-cas: 
-  server: 
-    # testing
-    name: "https://cas.example.org:8443"
-  sth:
-

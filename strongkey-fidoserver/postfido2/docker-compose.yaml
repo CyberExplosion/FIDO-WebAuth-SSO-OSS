@@ -1,9 +1,0 @@
-version: '3.9'
-services:
-  strongkey-postfido2:
-    container_name: postfido2-tutorial
-    build: .
-    extra_hosts:
-    - "fido2tutorial.strongkey.com:11.29.215.103"
-    ports:
-      - 3001:3001

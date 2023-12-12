@@ -1,7 +1,0 @@
-database:
-  user: hanko
-  password: hanko
-  database: hanko
-  host: postgresd
-  port: "5432"
-  dialect: "postgres"
