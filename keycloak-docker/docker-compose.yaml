@@ -1,9 +1,10 @@
 version: '3.9'
 services:
   keycloak:
-    container_name: keycloak
+    container_name: keycloak_custom
 
-    image: quay.io/keycloak/keycloak:latest
+    # image: quay.io/keycloak/keycloak:latest
+    image: keycloak_custom:latest
     ports:
       - "8080:8080"
       - "8443:8443" # For https version
@@ -12,13 +13,12 @@ services:
       - KEYCLOAK_ADMIN_PASSWORD=admin
     volumes:
       - type: bind
-        source: "C:\\Users\\me Khoi\\AppData\\Local\\mkcert\\rootCA.pem"
+        source: "rootCA.pem"
         target: /opt/keycloak/bin/mkcert/rootCA.pem
       - type: bind
-        source: "C:\\Users\\me Khoi\\AppData\\Local\\mkcert\\rootCA-key.pem"
+        source: "rootCA-key.pem"
         target: /opt/keycloak/bin/mkcert/rootCA-key.pem
     entrypoint: /bin/sh
     command:
       - -c
-      # - /opt/keycloak/bin/kc.sh
       - "/opt/keycloak/bin/kc.sh --verbose start --hostname=localhost --https-certificate-file=/opt/keycloak/bin/mkcert/rootCA.pem --https-certificate-key-file=/opt/keycloak/bin/mkcert/rootCA-key.pem"
